@@ -2,14 +2,17 @@
 
 # AWS S3 bucket name
 bucket_name="brandon-chesser-cloud-resume-challenge"
+website_directory="./Website"
 
-# Local file path
-index_html="Website/index.html"
-index_js="Website/index.js"
-
-# AWS CLI command to upload the file
-aws s3 cp "$index_html" "s3://$bucket_name/" --profile AdministratorAccess-395067379223
-aws s3 cp "$index_js" "s3://$bucket_name/" --profile AdministratorAccess-395067379223
+# Iterate over each file in the directory
+for file in "$website_directory"/*; do
+  # Check if the item is a file
+  if [ -f "$file" ]; then
+    echo "Processing file: $file"
+    # Upload to AWS bucket
+    aws s3 cp "$file" "s3://$bucket_name/" --profile AdministratorAccess-395067379223
+  fi
+done
 
 # Check if the upload was successful
 if [ $? -eq 0 ]; then
